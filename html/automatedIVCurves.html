@@ -1,0 +1,315 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>automatedIVCurves</title><meta name="generator" content="MATLAB 8.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-09-10"><meta name="DC.source" content="automatedIVCurves.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Script to autogenerate IV and PV curves for multiple lux values</a></li><li><a href="#3">I V P curves for the last Lux value</a></li></ul></div><h2>Script to autogenerate IV and PV curves for multiple lux values<a name="1"></a></h2><p>Initialize variables</p><pre class="codeinput">clf
+Illuminance_1= 50:100:1000; <span class="comment">% step size 100</span>
+Illuminance_2= 1500:500:5000; <span class="comment">% step size 500</span>
+Illuminance_used = [Illuminance_1'; Illuminance_2'];
+lux_vals=size(Illuminance_used)
+plot_vi = zeros(1,lux_vals(1,1));
+plot_vp = zeros(1,lux_vals(1,1));
+MPPT = zeros(lux_vals(1,1),4);
+colour = [<span class="string">'b'</span>,<span class="string">'g'</span>,<span class="string">'r'</span>,<span class="string">'c'</span>,<span class="string">'m'</span>,<span class="string">'k'</span>];
+colour_index=1;
+<span class="comment">% M=double(Illuminance_used);</span>
+<span class="comment">%M={'Lux=100','200','300','400','500','600','700','100','200','300','400','500','600','700','100','200','300','400'};</span>
+load_system(<span class="string">'my_model'</span>);
+</pre><pre class="codeoutput">
+lux_vals =
+
+    18     1
+
+</pre><p>run the script for all the Lux values</p><pre class="codeinput"><span class="keyword">for</span> i=1:1:lux_vals(1,1)
+
+    lux_ws(:,1)=i;
+    lux_ws(:,2) = Illuminance_used(i);
+    simOut = sim(<span class="string">'my_model'</span>);<span class="comment">%%('my_model','SaveOutput','on');</span>
+
+
+    <span class="comment">%results= zeros([10000,3]);</span>
+    <span class="comment">%results = simOut.get( 'yout' );</span>
+
+    <span class="comment">%block to compute Index at Max power Point, and record V,I and P at MPP</span>
+    [MPPT_p,Index] = max(Simulation_out.signals(3).values);
+    MPPT(i,1) =Simulation_out.signals(1).values(Index);  <span class="comment">% Current @ MPP for that perticular LUX {i} value</span>
+    MPPT(i,2) =Simulation_out.signals(2).values(Index);  <span class="comment">% Voltage @ MPP for that perticular LUX {i} value</span>
+    MPPT(i,3) =Simulation_out.signals(3).values(Index);  <span class="comment">% Power   @ MPP for that perticular LUX {i} value</span>
+    MPPT(i,4)= V_oc(2);
+
+    <span class="comment">%MPPT(i,1) = results(Index,1);</span>
+    <span class="comment">%MPPT(i,2) = results(Index,2);</span>
+    <span class="comment">%MPPT(i,3) = results(Index,3);</span>
+
+    figure(1)
+    hold <span class="string">all</span>
+    plot_vi(i)=plot(Simulation_out.signals(2).values,Simulation_out.signals(1).values,<span class="string">'Color'</span>,colour(colour_index), <span class="string">'DisplayName'</span>, sprintf(<span class="string">'%d'</span>,Illuminance_used(i))); <span class="comment">% plot of I vs V</span>
+    <span class="comment">%%plot(results(:,2),results(:,1),'Color',colour(i))</span>
+    legend(plot_vi,<span class="string">'Location'</span>,<span class="string">'NorthWest'</span>);
+
+    <span class="comment">% Set DisplayNames for the lines for use by the legend</span>
+    xlabel(<span class="string">'Voltage'</span>);
+    ylabel(<span class="string">'Current'</span>);
+    title(<span class="string">'I-V Curve'</span>);
+
+    <span class="comment">%%'Location','BestOutside');</span>
+    figure(2)
+    plot_vp(i)=plot(Simulation_out.signals(2).values,Simulation_out.signals(3).values,<span class="string">'Color'</span>,colour(colour_index),<span class="string">'DisplayName'</span>,sprintf(<span class="string">'%d'</span>,Illuminance_used(i))); <span class="comment">% plot of P vs V</span>
+    legend(plot_vp,<span class="string">'Location'</span>,<span class="string">'NorthWest'</span>);
+    <span class="comment">%%plot(results(:,2),results(:,3),'Color',colour(i))</span>
+    hold <span class="string">on</span>
+
+    xlabel(<span class="string">'Voltage'</span>);
+    ylabel(<span class="string">'Power'</span>);
+    title(<span class="string">'P-V Curve'</span>);
+    colour_index=colour_index+1;
+    <span class="keyword">if</span> colour_index == 6
+        colour_index=1;
+    <span class="keyword">end</span>
+
+<span class="keyword">end</span>
+<span class="comment">%%Plot the Max power point onto the graphs</span>
+figure(1)
+plot(MPPT(:,2),MPPT(:,1),<span class="string">'b*'</span>);<span class="comment">%,'Color','b');</span>
+figure(2)
+plot(MPPT(:,2),MPPT(:,3),<span class="string">'bd'</span>);
+</pre><pre class="codeoutput">Warning: Using a default value of 0.4 for maximum step size.  The simulation
+step size will be equal to or less than this value.  You can disable this
+diagnostic by setting 'Automatic solver parameter selection' diagnostic to
+'none' in the Diagnostics page of the configuration parameters dialog 
+Warning: Using a default value of 0.4 for maximum step size.  The simulation
+step size will be equal to or less than this value.  You can disable this
+diagnostic by setting 'Automatic solver parameter selection' diagnostic to
+'none' in the Diagnostics page of the configuration parameters dialog 
+Warning: Using a default value of 0.4 for maximum step size.  The simulation
+step size will be equal to or less than this value.  You can disable this
+diagnostic by setting 'Automatic solver parameter selection' diagnostic to
+'none' in the Diagnostics page of the configuration parameters dialog 
+Warning: Using a default value of 0.4 for maximum step size.  The simulation
+step size will be equal to or less than this value.  You can disable this
+diagnostic by setting 'Automatic solver parameter selection' diagnostic to
+'none' in the Diagnostics page of the configuration parameters dialog 
+Warning: Using a default value of 0.4 for maximum step size.  The simulation
+step size will be equal to or less than this value.  You can disable this
+diagnostic by setting 'Automatic solver parameter selection' diagnostic to
+'none' in the Diagnostics page of the configuration parameters dialog 
+Warning: Using a default value of 0.4 for maximum step size.  The simulation
+step size will be equal to or less than this value.  You can disable this
+diagnostic by setting 'Automatic solver parameter selection' diagnostic to
+'none' in the Diagnostics page of the configuration parameters dialog 
+Warning: Using a default value of 0.4 for maximum step size.  The simulation
+step size will be equal to or less than this value.  You can disable this
+diagnostic by setting 'Automatic solver parameter selection' diagnostic to
+'none' in the Diagnostics page of the configuration parameters dialog 
+Warning: Using a default value of 0.4 for maximum step size.  The simulation
+step size will be equal to or less than this value.  You can disable this
+diagnostic by setting 'Automatic solver parameter selection' diagnostic to
+'none' in the Diagnostics page of the configuration parameters dialog 
+Warning: Using a default value of 0.4 for maximum step size.  The simulation
+step size will be equal to or less than this value.  You can disable this
+diagnostic by setting 'Automatic solver parameter selection' diagnostic to
+'none' in the Diagnostics page of the configuration parameters dialog 
+Warning: Using a default value of 0.4 for maximum step size.  The simulation
+step size will be equal to or less than this value.  You can disable this
+diagnostic by setting 'Automatic solver parameter selection' diagnostic to
+'none' in the Diagnostics page of the configuration parameters dialog 
+Warning: Using a default value of 0.4 for maximum step size.  The simulation
+step size will be equal to or less than this value.  You can disable this
+diagnostic by setting 'Automatic solver parameter selection' diagnostic to
+'none' in the Diagnostics page of the configuration parameters dialog 
+Warning: Using a default value of 0.4 for maximum step size.  The simulation
+step size will be equal to or less than this value.  You can disable this
+diagnostic by setting 'Automatic solver parameter selection' diagnostic to
+'none' in the Diagnostics page of the configuration parameters dialog 
+Warning: Using a default value of 0.4 for maximum step size.  The simulation
+step size will be equal to or less than this value.  You can disable this
+diagnostic by setting 'Automatic solver parameter selection' diagnostic to
+'none' in the Diagnostics page of the configuration parameters dialog 
+Warning: Using a default value of 0.4 for maximum step size.  The simulation
+step size will be equal to or less than this value.  You can disable this
+diagnostic by setting 'Automatic solver parameter selection' diagnostic to
+'none' in the Diagnostics page of the configuration parameters dialog 
+Warning: Using a default value of 0.4 for maximum step size.  The simulation
+step size will be equal to or less than this value.  You can disable this
+diagnostic by setting 'Automatic solver parameter selection' diagnostic to
+'none' in the Diagnostics page of the configuration parameters dialog 
+Warning: Using a default value of 0.4 for maximum step size.  The simulation
+step size will be equal to or less than this value.  You can disable this
+diagnostic by setting 'Automatic solver parameter selection' diagnostic to
+'none' in the Diagnostics page of the configuration parameters dialog 
+Warning: Using a default value of 0.4 for maximum step size.  The simulation
+step size will be equal to or less than this value.  You can disable this
+diagnostic by setting 'Automatic solver parameter selection' diagnostic to
+'none' in the Diagnostics page of the configuration parameters dialog 
+Warning: Using a default value of 0.4 for maximum step size.  The simulation
+step size will be equal to or less than this value.  You can disable this
+diagnostic by setting 'Automatic solver parameter selection' diagnostic to
+'none' in the Diagnostics page of the configuration parameters dialog 
+</pre><img vspace="5" hspace="5" src="automatedIVCurves_01.png" alt=""> <img vspace="5" hspace="5" src="automatedIVCurves_02.png" alt=""> <h2>I V P curves for the last Lux value<a name="3"></a></h2><pre class="codeinput">figure(3)
+subplot(3,1,1);plot(Simulation_out.signals(1).values);
+subplot(3,1,2);plot(Simulation_out.signals(2).values);
+subplot(3,1,3);plot(Simulation_out.signals(3).values);
+</pre><img vspace="5" hspace="5" src="automatedIVCurves_03.png" alt=""> <pre class="codeinput">figure(4)
+plot(MPPT(:,2),MPPT(:,4));
+xlabel(<span class="string">'Voltage @ MPP'</span>);
+ylabel(<span class="string">'Voc'</span>);
+
+<span class="comment">%%free up memory</span>
+clear_list={<span class="string">'plot_vp'</span>,<span class="string">'plot_vi'</span>,<span class="string">'colour_index'</span>,<span class="string">'colour'</span>,<span class="string">'Illuminance_used'</span>,<span class="string">'lux_vals'</span>,<span class="string">'V_oc'</span>,<span class="string">'lux_ws'</span>,<span class="string">'MPPT_p'</span>,<span class="string">'Index'</span>,<span class="string">'i'</span>,<span class="string">'Illuminance_1'</span>,<span class="string">'Illuminance_2'</span>,<span class="string">'simOut'</span>};
+clear(clear_list{:});
+clear <span class="string">clear_list</span>;
+</pre><img vspace="5" hspace="5" src="automatedIVCurves_04.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Script to autogenerate IV and PV curves for multiple lux values
+% Initialize variables
+clf
+Illuminance_1= 50:100:1000; % step size 100
+Illuminance_2= 1500:500:5000; % step size 500
+Illuminance_used = [Illuminance_1'; Illuminance_2'];
+lux_vals=size(Illuminance_used)
+plot_vi = zeros(1,lux_vals(1,1));
+plot_vp = zeros(1,lux_vals(1,1));
+MPPT = zeros(lux_vals(1,1),4);
+colour = ['b','g','r','c','m','k'];
+colour_index=1;
+% M=double(Illuminance_used);
+%M={'Lux=100','200','300','400','500','600','700','100','200','300','400','500','600','700','100','200','300','400'};
+load_system('my_model');
+%%
+% run the script for all the Lux values 
+for i=1:1:lux_vals(1,1)
+
+    lux_ws(:,1)=i;
+    lux_ws(:,2) = Illuminance_used(i);
+    simOut = sim('my_model');%%('my_model','SaveOutput','on');
+    
+    
+    %results= zeros([10000,3]);
+    %results = simOut.get( 'yout' );
+    
+    %block to compute Index at Max power Point, and record V,I and P at MPP
+    [MPPT_p,Index] = max(Simulation_out.signals(3).values);
+    MPPT(i,1) =Simulation_out.signals(1).values(Index);  % Current @ MPP for that perticular LUX {i} value
+    MPPT(i,2) =Simulation_out.signals(2).values(Index);  % Voltage @ MPP for that perticular LUX {i} value
+    MPPT(i,3) =Simulation_out.signals(3).values(Index);  % Power   @ MPP for that perticular LUX {i} value
+    MPPT(i,4)= V_oc(2);
+    
+    %MPPT(i,1) = results(Index,1);
+    %MPPT(i,2) = results(Index,2);
+    %MPPT(i,3) = results(Index,3);
+    
+    figure(1)
+    hold all
+    plot_vi(i)=plot(Simulation_out.signals(2).values,Simulation_out.signals(1).values,'Color',colour(colour_index), 'DisplayName', sprintf('%d',Illuminance_used(i))); % plot of I vs V
+    %%plot(results(:,2),results(:,1),'Color',colour(i))
+    legend(plot_vi,'Location','NorthWest');
+    
+    % Set DisplayNames for the lines for use by the legend
+    xlabel('Voltage');
+    ylabel('Current');
+    title('I-V Curve');
+    
+    %%'Location','BestOutside');
+    figure(2)
+    plot_vp(i)=plot(Simulation_out.signals(2).values,Simulation_out.signals(3).values,'Color',colour(colour_index),'DisplayName',sprintf('%d',Illuminance_used(i))); % plot of P vs V
+    legend(plot_vp,'Location','NorthWest');
+    %%plot(results(:,2),results(:,3),'Color',colour(i))
+    hold on
+    
+    xlabel('Voltage');
+    ylabel('Power');
+    title('P-V Curve');
+    colour_index=colour_index+1;
+    if colour_index == 6
+        colour_index=1;
+    end
+
+end
+%%Plot the Max power point onto the graphs 
+figure(1)
+plot(MPPT(:,2),MPPT(:,1),'b*');%,'Color','b');
+figure(2)
+plot(MPPT(:,2),MPPT(:,3),'bd');
+
+%% I V P curves for the last Lux value
+figure(3)
+subplot(3,1,1);plot(Simulation_out.signals(1).values);
+subplot(3,1,2);plot(Simulation_out.signals(2).values);
+subplot(3,1,3);plot(Simulation_out.signals(3).values);
+%%
+figure(4)
+plot(MPPT(:,2),MPPT(:,4));
+xlabel('Voltage @ MPP');
+ylabel('Voc');
+
+%%free up memory 
+clear_list={'plot_vp','plot_vi','colour_index','colour','Illuminance_used','lux_vals','V_oc','lux_ws','MPPT_p','Index','i','Illuminance_1','Illuminance_2','simOut'};
+clear(clear_list{:});
+clear clear_list;
+
+##### SOURCE END #####
+--></body></html>

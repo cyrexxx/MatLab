@@ -1,0 +1,3 @@
+LIBRARY G24i_buck_boost_sfun.mexw64
+EXPORTS
+mexFunction

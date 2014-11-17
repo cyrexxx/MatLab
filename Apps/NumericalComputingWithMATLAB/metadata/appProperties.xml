@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<appProperties xmlns="http://schemas.mathworks.com/matlab/app/2012/appProperties" signature="373491E3678094E2BD8EFFB0BE926C102C7403AB">
+
+  <entryPoint>ncmgui</entryPoint>
+
+  <name>Numerical Computing with MATLAB</name>
+
+  <version>1.0</version>
+
+  <createdByMATLABRelease>(R2012b)</createdByMATLABRelease>
+
+  <GUID>f0d3c60a-1390-45f7-89ea-f18abb9dd7ec</GUID>
+
+  <summary>Apps from Numerical Computing with MATLAB</summary>
+
+  <description>Numerical Computing with MATLAB is a textbook for an introductory course in numerical methods, MATLAB, and technical computing. It emphasizes the informed use of mathematical software. Topics include matrix computation, interpolation and zero finding, differential equations, random numbers, and Fourier analysis.
+
+This app includes 19 interactive applications from the book which help readers explore a wide range of mathematical concepts through interesting applications.
+
+The entire textbook and additional supporting code is available for free download:
+http://www.mathworks.com/moler/index_ncm.html
+
+Copyright 2012 Cleve Moler and The MathWorks, Inc.</description>
+
+  <author>
+    <name>Cleve Moler</name>
+    <contact></contact>
+    <organization></organization>
+  </author>
+
+  <supportedPlatforms/>
+
+  <requiredProducts>
+    <product identifier="-1" name="MATLAB" version="8.0"/>
+  </requiredProducts>
+
+  <numFiles>82</numFiles>
+
+  <created>2012-09-12T14:42:50Z</created>
+
+  <appEntries>
+    <appFile>/ncmgui.m</appFile>
+    <appFile>/bigscreen.m</appFile>
+    <appFile>/bizcard.m</appFile>
+    <appFile>/blackjack.m</appFile>
+    <appFile>/brownian.m</appFile>
+    <appFile>/bslashtx.m</appFile>
+    <appFile>/censusgui.m</appFile>
+    <appFile>/circlegen.m</appFile>
+    <appFile>/Contents.m</appFile>
+    <appFile>/crypto.m</appFile>
+    <appFile>/digraph.m</appFile>
+    <appFile>/eigsvdgui.m</appFile>
+    <appFile>/elnino.dat</appFile>
+    <appFile>/encrypt.m</appFile>
+    <appFile>/fern.m</appFile>
+    <appFile>/fern.png</appFile>
+    <appFile>/fftgui.m</appFile>
+    <appFile>/fftmatrix.m</appFile>
+    <appFile>/ffttx.m</appFile>
+    <appFile>/fibnum.m</appFile>
+    <appFile>/fibonacci.m</appFile>
+    <appFile>/finitefern.m</appFile>
+    <appFile>/flame.m</appFile>
+    <appFile>/floatgui.m</appFile>
+    <appFile>/fmintx.m</appFile>
+    <appFile>/font.m</appFile>
+    <appFile>/fzerogui.m</appFile>
+    <appFile>/fzerotx.m</appFile>
+    <appFile>/gettysburg.txt</appFile>
+    <appFile>/goldfract.m</appFile>
+    <appFile>/goldrect.m</appFile>
+    <appFile>/golub.m</appFile>
+    <appFile>/greetings.m</appFile>
+    <appFile>/harvard500.mat</appFile>
+    <appFile>/imagesvd.m</appFile>
+    <appFile>/inregion.m</appFile>
+    <appFile>/interp2dgui.m</appFile>
+    <appFile>/interpgui.m</appFile>
+    <appFile>/longley.dat</appFile>
+    <appFile>/lorenzgui.m</appFile>
+    <appFile>/lugui.m</appFile>
+    <appFile>/lutx.m</appFile>
+    <appFile>/membrane.mat</appFile>
+    <appFile>/membranetx.m</appFile>
+    <appFile>/ncmgui.m</appFile>
+    <appFile>/ncmlogo.m</appFile>
+    <appFile>/ncmlogosmall.png</appFile>
+    <appFile>/ode23tx.m</appFile>
+    <appFile>/pagerank.m</appFile>
+    <appFile>/pagerankpow.m</appFile>
+    <appFile>/pchiptx.m</appFile>
+    <appFile>/pdegui.m</appFile>
+    <appFile>/pennymelt.m</appFile>
+    <appFile>/piecelin.m</appFile>
+    <appFile>/pivotgolf.m</appFile>
+    <appFile>/polyinterp.m</appFile>
+    <appFile>/powersin.m</appFile>
+    <appFile>/primespiral.m</appFile>
+    <appFile>/qrsteps.m</appFile>
+    <appFile>/quadgui.m</appFile>
+    <appFile>/quadtx.m</appFile>
+    <appFile>/randgui.m</appFile>
+    <appFile>/randmcg.m</appFile>
+    <appFile>/randncond.m</appFile>
+    <appFile>/randntx.m</appFile>
+    <appFile>/randssp.m</appFile>
+    <appFile>/randtx.m</appFile>
+    <appFile>/rungeinterp.m</appFile>
+    <appFile>/splinetx.m</appFile>
+    <appFile>/stegano.m</appFile>
+    <appFile>/sunspotstx.m</appFile>
+    <appFile>/surfer.m</appFile>
+    <appFile>/swinger.m</appFile>
+    <appFile>/swingernew.m</appFile>
+    <appFile>/threenplus1.m</appFile>
+    <appFile>/touchtone.m</appFile>
+    <appFile>/touchtone.mat</appFile>
+    <appFile>/tridisolve.m</appFile>
+    <appFile>/vandal.m</appFile>
+    <appFile>/walker.m</appFile>
+    <appFile>/walkers.mat</appFile>
+    <appFile>/waves.m</appFile>
+  </appEntries>
+
+</appProperties>
