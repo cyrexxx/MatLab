@@ -7,7 +7,7 @@ LIBFLAGS =
 
 OBJECTS = \
 	"G24i_v_source_sfun.obj"\
-	"c5_G24i_v_source.obj"\
+	"c2_G24i_v_source.obj"\
 	"G24i_v_source_sfun_registry.obj"\
 	"lccstub.obj"\
 	"G24i_v_source_sfun.def"\
@@ -30,8 +30,8 @@ G24i_v_source_sfun.mexw64 : $(MAKEFILE) $(OBJECTS)
 	$(LD) $(LDFLAGS) -o G24i_v_source_sfun.mexw64 @G24i_v_source_sfun.lmko
 G24i_v_source_sfun.obj :	"G24i_v_source_sfun.c"
 	$(CC) $(CFLAGS) $(INCLUDE_PATH) "G24i_v_source_sfun.c"
-c5_G24i_v_source.obj :	"c5_G24i_v_source.c"
-	$(CC) $(CFLAGS) $(INCLUDE_PATH) "c5_G24i_v_source.c"
+c2_G24i_v_source.obj :	"c2_G24i_v_source.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "c2_G24i_v_source.c"
 G24i_v_source_sfun_registry.obj :	"G24i_v_source_sfun_registry.c"
 	$(CC) $(CFLAGS) $(INCLUDE_PATH) "G24i_v_source_sfun_registry.c"
 lccstub.obj :	"C:\Program Files\MATLAB\R2014a\sys\lcc64\lcc64\mex\lccstub.c"

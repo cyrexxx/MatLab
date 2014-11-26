@@ -2,12 +2,14 @@
 % Initialize variables
 clf
 Illuminance_1= 100:50:1000; % step size 100
-Illuminance_2= 1100:50:5000; % step size 500
-Illuminance_used= [2500];%[Illuminance_1'; Illuminance_2'];
+Illuminance_2= 1050:50:5000; % step size 500
+Illuminance_used= [Illuminance_1'; Illuminance_2'];
 lux_vals=size(Illuminance_used)
 plot_vi = zeros(1,lux_vals(1,1));
 plot_vp = zeros(1,lux_vals(1,1));
-MPPT = zeros(lux_vals(1,1),4);
+plot_voc= zeros(1,lux_vals(1,1));
+MPPT = zeros(lux_vals(1,1),5);
+MPPT_oc = zeros(lux_vals(1,1),4);
 colour = ['b','g','r','c','m','k'];
 colour_index=1;
 % M=double(Illuminance_used);
@@ -17,20 +19,31 @@ load_system('my_model');
 % run the script for all the Lux values 
 for i=1:1:lux_vals(1,1)
 
-    lux_ws(:,1)=i;
+    lux_ws(:,1)=i;                % values fed to the Model
     lux_ws(:,2) = Illuminance_used(i);
-    simOut = sim('my_model');%%('my_model','SaveOutput','on');
+    simOut = sim('my_model');     %%('my_model','SaveOutput','on');% run simulation 
     
     
     %results= zeros([10000,3]);
     %results = simOut.get( 'yout' );
     
     %block to compute Index at Max power Point, and record V,I and P at MPP
+    
+     %diff(sign(Simulation_out.signals(1).values))
     [MPPT_p,Index] = max(Simulation_out.signals(3).values);
-    MPPT(i,1) =Simulation_out.signals(1).values(Index);  % Current @ MPP for that perticular LUX {i} value
-    MPPT(i,2) =Simulation_out.signals(2).values(Index);  % Voltage @ MPP for that perticular LUX {i} value
-    MPPT(i,3) =Simulation_out.signals(3).values(Index);  % Power   @ MPP for that perticular LUX {i} value
-    MPPT(i,4)= V_oc(2);
+    [dummy idx0] = min(abs(Simulation_out.signals(2).values-Simulation_out.signals(4).values(Index)));
+    
+    MPPT(i,1) = Simulation_out.signals(1).values(Index);  % Current @ MPP for that perticular LUX {i} value
+    MPPT(i,2) = Simulation_out.signals(2).values(Index);  % Voltage @ MPP for that perticular LUX {i} value
+    MPPT(i,3) = Simulation_out.signals(3).values(Index);  % Power   @ MPP for that perticular LUX {i} value
+    MPPT(i,4) = Simulation_out.signals(2).values(idx0);%V_oc(2);  % Voc 
+    MPPT(i,5) = Illuminance_used(i);
+    Index
+    idx0
+    MPPT_oc(i,1)= Simulation_out.signals(1).values(idx0);
+    MPPT_oc(i,2)= Simulation_out.signals(2).values(idx0);
+    MPPT_oc(i,3)= Simulation_out.signals(3).values(idx0);
+    MPPT_oc(i,4)= Simulation_out.signals(4).values(Index);
     
     %MPPT(i,1) = results(Index,1);
     %MPPT(i,2) = results(Index,2);
@@ -57,6 +70,10 @@ for i=1:1:lux_vals(1,1)
     xlabel('Voltage');
     ylabel('Power');
     title('P-V Curve');
+      
+    
+  
+    
     colour_index=colour_index+1;
     if colour_index == 6
         colour_index=1;
@@ -66,8 +83,10 @@ end
 %%Plot the Max power point onto the graphs 
 figure(1)
 plot(MPPT(:,2),MPPT(:,1),'b*');%,'Color','b');
+
 figure(2)
 plot(MPPT(:,2),MPPT(:,3),'b*');
+
 
 %% I V P curves for the last Lux value
 figure(3)
@@ -76,9 +95,21 @@ subplot(3,1,2);plot(Simulation_out.signals(2).values);
 subplot(3,1,3);plot(Simulation_out.signals(3).values);
 %%
 figure(4)
-plot(MPPT(:,2),MPPT(:,4));
+plot(MPPT(:,2),MPPT_oc(:,2));
+plot(MPPT(:,2),MPPT(:,4),'r');
 xlabel('Voltage @ MPP');
 ylabel('Voc');
+
+%%
+figure(6)
+plot(MPPT(:,2),MPPT(:,4),'b');
+xlabel('Voltage @ MPP');
+ylabel('Voc');
+
+%save to excel
+filename = 'MPPT_v.xlsx';
+xlswrite(filename,MPPT,'A','B2');
+
 
 %%free up memory 
 clear_list={'plot_vp','plot_vi','colour_index','colour','Illuminance_used','lux_vals','V_oc','lux_ws','MPPT_p','Index','i','Illuminance_1','Illuminance_2','simOut'};
