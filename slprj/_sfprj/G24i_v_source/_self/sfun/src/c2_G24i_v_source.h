@@ -8,6 +8,25 @@
 #include "multiword_types.h"
 
 /* Type Definitions */
+#ifndef struct_sZC8snFIP2XGLBfvkfBz2BF
+#define struct_sZC8snFIP2XGLBfvkfBz2BF
+
+struct sZC8snFIP2XGLBfvkfBz2BF
+{
+  real_T voc[20];
+  real_T vmpp[20];
+  real_T _index;
+};
+
+#endif                                 /*struct_sZC8snFIP2XGLBfvkfBz2BF*/
+
+#ifndef typedef_c2_sZC8snFIP2XGLBfvkfBz2BF
+#define typedef_c2_sZC8snFIP2XGLBfvkfBz2BF
+
+typedef struct sZC8snFIP2XGLBfvkfBz2BF c2_sZC8snFIP2XGLBfvkfBz2BF;
+
+#endif                                 /*typedef_c2_sZC8snFIP2XGLBfvkfBz2BF*/
+
 #ifndef typedef_SFc2_G24i_v_sourceInstanceStruct
 #define typedef_SFc2_G24i_v_sourceInstanceStruct
 
@@ -22,6 +41,8 @@ typedef struct {
   uint8_T c2_is_active_c2_G24i_v_source;
   real_T c2_Dold;
   boolean_T c2_Dold_not_empty;
+  real_T c2_Voc_old;
+  boolean_T c2_Voc_old_not_empty;
 } SFc2_G24i_v_sourceInstanceStruct;
 
 #endif                                 /*typedef_SFc2_G24i_v_sourceInstanceStruct*/
