@@ -8,24 +8,26 @@
 #include "multiword_types.h"
 
 /* Type Definitions */
-#ifndef struct_sZC8snFIP2XGLBfvkfBz2BF
-#define struct_sZC8snFIP2XGLBfvkfBz2BF
+#ifndef struct_sn8zmqn0HYA5FpMWomPYZkG
+#define struct_sn8zmqn0HYA5FpMWomPYZkG
 
-struct sZC8snFIP2XGLBfvkfBz2BF
+struct sn8zmqn0HYA5FpMWomPYZkG
 {
   real_T voc[20];
   real_T vmpp[20];
   real_T _index;
+  real_T x1[2];
+  real_T x2[2];
 };
 
-#endif                                 /*struct_sZC8snFIP2XGLBfvkfBz2BF*/
+#endif                                 /*struct_sn8zmqn0HYA5FpMWomPYZkG*/
 
-#ifndef typedef_c2_sZC8snFIP2XGLBfvkfBz2BF
-#define typedef_c2_sZC8snFIP2XGLBfvkfBz2BF
+#ifndef typedef_c2_sn8zmqn0HYA5FpMWomPYZkG
+#define typedef_c2_sn8zmqn0HYA5FpMWomPYZkG
 
-typedef struct sZC8snFIP2XGLBfvkfBz2BF c2_sZC8snFIP2XGLBfvkfBz2BF;
+typedef struct sn8zmqn0HYA5FpMWomPYZkG c2_sn8zmqn0HYA5FpMWomPYZkG;
 
-#endif                                 /*typedef_c2_sZC8snFIP2XGLBfvkfBz2BF*/
+#endif                                 /*typedef_c2_sn8zmqn0HYA5FpMWomPYZkG*/
 
 #ifndef typedef_SFc2_G24i_v_sourceInstanceStruct
 #define typedef_SFc2_G24i_v_sourceInstanceStruct
@@ -43,6 +45,12 @@ typedef struct {
   boolean_T c2_Dold_not_empty;
   real_T c2_Voc_old;
   boolean_T c2_Voc_old_not_empty;
+  real_T c2_upper_lim;
+  boolean_T c2_upper_lim_not_empty;
+  real_T c2_low_lim;
+  boolean_T c2_low_lim_not_empty;
+  real_T c2_iteration_count;
+  boolean_T c2_iteration_count_not_empty;
 } SFc2_G24i_v_sourceInstanceStruct;
 
 #endif                                 /*typedef_SFc2_G24i_v_sourceInstanceStruct*/
