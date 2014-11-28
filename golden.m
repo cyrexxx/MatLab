@@ -6,8 +6,8 @@
 
 figure; hold on;
 
-a=0.8;                            % start of interval
-b=0.83;                            % end of interval
+a=-50;                            % start of interval
+b=60;                            % end of interval
 epsilon=0.001;               % accuracy value
 iter= 50;                       % maximum number of iterations
 tau=double((sqrt(5)-1)/2);      % golden proportion coefficient, around 0.618
@@ -25,7 +25,7 @@ plot(x2,f_x2,'rx')
 
 while ((abs(b-a)>epsilon) && (k<iter))
     k=k+1
-    if(f_x1<f_x2)
+    if(f_x1>f_x2)
         b=x2;
         x2=x1;
         x1=a+(1-tau)*(b-a);

@@ -3,7 +3,7 @@
 clf
 Illuminance_1= 100:50:1000; % step size 100
 Illuminance_2= 1050:50:5000; % step size 500
-Illuminance_used= [Illuminance_1'; Illuminance_2'];
+Illuminance_used= [200;800;2500];%[Illuminance_1'; Illuminance_2'];
 lux_vals=size(Illuminance_used)
 plot_vi = zeros(1,lux_vals(1,1));
 plot_vp = zeros(1,lux_vals(1,1));
