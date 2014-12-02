@@ -14,11 +14,6 @@
 typedef struct {
   SimStruct *S;
   ChartInfoStruct chartInfo;
-  uint32_T chartNumber;
-  uint32_T instanceNumber;
-  int32_T c2_sfEvent;
-  boolean_T c2_isStable;
-  boolean_T c2_doneDoubleBufferReInit;
   uint8_T c2_is_active_c2_G24i_v_source;
   real_T c2_Dold;
   boolean_T c2_Dold_not_empty;
