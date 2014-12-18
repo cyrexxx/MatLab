@@ -1,9 +1,10 @@
 %% Script to autogenerate IV and PV curves for multiple lux values
 % Initialize variables
 clf
+filename = 'testdata_out.xlsx';
 Illuminance_1= 100:50:1000; % step size 100
 Illuminance_2= 1050:50:5000; % step size 500
-Illuminance_used= [200;800;2500];%[Illuminance_1'; Illuminance_2'];
+Illuminance_used= [Illuminance_1'; Illuminance_2'];%[10.9;19.9;40.2;50.1;75.4;99.2;124.8;150;201;299;394;500;747;908;1001;1247;1480;2030;2550;3060;4030;5040];
 lux_vals=size(Illuminance_used)
 plot_vi = zeros(1,lux_vals(1,1));
 plot_vp = zeros(1,lux_vals(1,1));
@@ -23,6 +24,15 @@ for i=1:1:lux_vals(1,1)
     lux_ws(:,2) = Illuminance_used(i);
     simOut = sim('my_model');     %%('my_model','SaveOutput','on');% run simulation 
     
+    sheet = i;
+    current_size=size(Simulation_out.signals(1).values);
+    Ai=repmat(Illuminance_used(i),1,current_size(1,1));
+    ai_T=transpose(Ai);
+    
+    xlswrite(filename,Simulation_out.signals(2).values,sheet,'A1');
+    xlswrite(filename,Simulation_out.signals(1).values,sheet,'B1');
+    xlswrite(filename,ai_T,sheet,'C1');
+    %xlswrite(filename,Simulation_out.signals(3).values,sheet,'D1');
     
     %results= zeros([10000,3]);
     %results = simOut.get( 'yout' );
